@@ -1,0 +1,27 @@
+{
+    "name": "smartsoftware/modelworkflow",
+    "description": "Workflow for laravel models",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Martin Alejandro Santangelo",
+            "email": "msantang@smartsoftware.com.ar"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.9.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Smartsoftware\\Modelworkflow\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}

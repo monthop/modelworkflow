@@ -54,10 +54,10 @@ use Smartsoftware\Modelworkflow\Task;
 
 class Model implements StatefulInterface {
     private $state;
-    public function setState($new_state){
+    public function setObjState($new_state){
         $this->state = $new_state;
     }
-    public function getState() {
+    public function getObjState() {
         return $this->state;
     }
 }
