@@ -21,7 +21,7 @@ trait ModelTrait {
 
         static::creating(function($m){
             // init all model workflows
-            foreach (array_keys($workflows) as $attribute) {
+            foreach (array_keys(self::$workflows) as $attribute) {
                 $m->getWorkflow($attribute, false);
             }
         });
