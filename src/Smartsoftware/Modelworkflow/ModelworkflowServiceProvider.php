@@ -23,7 +23,6 @@ class ModelworkflowServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		$this->package('smartsoftware/modelworkflow');
-		$this->loadTranslationsFrom(__DIR__.'../../lang', 'modelworkflow');
 	}
 
 	/**
