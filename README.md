@@ -1,6 +1,110 @@
-Model Workflow for Laravel
+Model Workflow for Laravel 4
 ==========================
 This package provide a workflow for laravel models, like a FSM for model states (defined by a model attribute)
+
+Install
+-----
+This package can be installed via [composer](https://getcomposer.org/)
+Add requirement to composer.json
+```
+"require": {
+     ...
+     "smartsoftware/modelworkflow":"0.1.*"
+}
+```
+Then just add the service provider to app/config/app.php
+```php
+<?php
+'providers' => array(
+    ...
+   'Smartsoftware\Modelworkflow\ModelworkflowServiceProvider'
+```
+
+Geting Started
+===========
+The most simple way of using this package with eloquent it's via the ModelTrait
+```
+<?php
+use Smartsoftware\Modelworkflow\Interfaces\StatefulInterface;
+use Smartsoftware\Modelworkflow\Eloquent\ModelTrait;
+use Smartsoftware\Modelworkflow\Node;
+
+class Ticket extends Eloquent implements StatefulInterface {
+    use ModelTrait; // <- use the trait
+
+     /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'tickets';
+
+    protected $fillable = ['detail','date','status_id','user_id'];
+
+
+    protected static $workflows;
+
+    public static function boot()
+    {
+        static::$workflows = [
+            'status_id' => [
+                'nodes' => [
+                    [1, 'pending', Node::TYPE_INITIAL],
+                    [2, 'in process', Node::TYPE_NORMAL],
+                    [3, 'closed', Node::TYPE_FINAL],
+                ],
+                'transitions' => [
+                    [1,2, function(){
+                        /* 
+                        Some logic here when change 
+                        from 'pending' to 'in process'
+                        */
+                    }],
+                    [2,3]
+                ],
+                'taks' => [
+                    [1,2, function($from, $to){
+                       /* 
+                           Some logic here when transition 
+                           from 'pending' (1) to 'in process' (2) 
+                           it's finished successfuly
+                       */
+                    }],
+                    [2,'*', function($from, $to) {
+                            /*
+                            Run after all transitions from 'in process' (2)
+                            to any other status (*).
+                            */
+                    }]
+                ]
+            ]
+        ];
+
+        parent::boot();
+    }
+```
+
+Then the package track changes on the 'status' attribute
+```
+<?php
+   
+   $ticket = new Ticket;
+   $ticket->detail = 'Some bug here!';
+   $ticket->date  = date('Y-m-d');
+   $ticket->save(); 
+   // will automaticaly set status_id to initial state of 1
+
+    $ticket = Ticket::find(1);
+    $ticket->status_id = 2; // change from  1 to 2
+    $ticket->save(); 
+    /*
+    workflow will execute the transition to 2 if it's posible
+    or throw a InvalidStatusException
+    */
+```
+
+Using workflow without Trait
+=====================
 
 Nodes
 -----
