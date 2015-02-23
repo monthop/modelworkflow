@@ -62,7 +62,7 @@ class Ticket extends Eloquent implements StatefulInterface {
                     }],
                     [2,3]
                 ],
-                'taks' => [
+                'tasks' => [
                     [1,2, function($from, $to){
                        /* 
                            Some logic here when transition 
