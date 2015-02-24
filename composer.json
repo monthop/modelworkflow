@@ -2,6 +2,13 @@
     "name": "smartsoftware/modelworkflow",
     "description": "Workflow for laravel models",
     "license": "MIT",
+    "keywords": [
+      "laravel",
+      "workflow",
+      "eloquent",
+      "finite",
+      "state"
+    ],
     "authors": [
         {
             "name": "Martin Alejandro Santangelo",
